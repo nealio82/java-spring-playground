@@ -110,6 +110,7 @@ public class AggregateTest {
         aggregate.raise(new ThirdEvent());
 
         Assertions.assertIterableEquals(List.of(new ThirdEvent()), aggregate.flush());
+        Assertions.assertSame(3, aggregate.aggregateVersion());
     }
 
     static class EmptyEvent implements AggregateEvent {

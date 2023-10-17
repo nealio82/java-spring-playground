@@ -38,9 +38,6 @@ public abstract class Aggregate {
     }
 
     protected void raise(AggregateEvent event) throws NoAggregateEventApplicationMethodException {
-
-        this.aggregateVersion++;
-
         this.events.add(event);
 
         this.apply(event);
@@ -57,5 +54,7 @@ public abstract class Aggregate {
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException exception) {
             throw new NoAggregateEventApplicationMethodException(String.format("No method named %s was found in the %s class", methodName, this.getClass().getSimpleName()));
         }
+
+        this.aggregateVersion++;
     }
 }
