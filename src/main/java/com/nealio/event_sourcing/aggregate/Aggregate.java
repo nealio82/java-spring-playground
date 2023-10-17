@@ -1,4 +1,4 @@
-package com.nealio.event_sourcing;
+package com.nealio.event_sourcing.aggregate;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
