@@ -1,7 +1,5 @@
 package com.nealio.event_sourcing.aggregate;
 
-import com.nealio.event_sourcing.aggregate.CannotOverwriteAggregateWithExistingEventsException;
-import com.nealio.event_sourcing.aggregate.NoAggregateEventApplicationMethodException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
