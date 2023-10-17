@@ -1,4 +1,4 @@
 package com.nealio.event_sourcing;
 
-public class CannotOverwriteAggregateWithExistingEventsException extends RuntimeException {
+final class CannotOverwriteAggregateWithExistingEventsException extends RuntimeException {
 }
