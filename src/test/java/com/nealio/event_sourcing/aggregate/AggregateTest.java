@@ -1,5 +1,6 @@
 package com.nealio.event_sourcing.aggregate;
 
+import com.nealio.event_sourcing.event_store.Doubles.SampleAggregate;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -54,7 +55,7 @@ public class AggregateTest {
 
     @Test
     public void aggregateIsBuiltFromExistingEvents() {
-        AggregateSpy aggregate = (AggregateSpy) Aggregate.buildFromEvents(new AggregateEvent[]{new FirstEvent(), new SecondEvent()}, new AggregateSpy());
+        AggregateSpy aggregate = (AggregateSpy) Aggregate.buildFromEvents(List.of(new FirstEvent(), new SecondEvent()), new AggregateSpy());
 
         Assertions.assertTrue(aggregate.wasFirstEventApplied());
         Assertions.assertTrue(aggregate.wasSecondEventApplied());
@@ -66,7 +67,7 @@ public class AggregateTest {
         aggregate.raise(new FirstEvent());
 
         Assertions.assertThrows(CannotOverwriteAggregateWithExistingEventsException.class, () -> {
-            Aggregate.buildFromEvents(new AggregateEvent[]{new FirstEvent()}, aggregate);
+            Aggregate.buildFromEvents(List.of(new FirstEvent()), aggregate);
         });
     }
 
@@ -104,9 +105,7 @@ public class AggregateTest {
 
     @Test
     public void newEventsAreAppendedAfterAggregateIsBuiltFromPrevious() {
-        AggregateStub aggregate = (AggregateStub) Aggregate.buildFromEvents(
-                new AggregateEvent[]{new FirstEvent(), new SecondEvent()}, new AggregateStub()
-        );
+        AggregateStub aggregate = (AggregateStub) Aggregate.buildFromEvents(List.of(new FirstEvent(), new SecondEvent()), new AggregateStub());
         aggregate.raise(new ThirdEvent());
 
         Assertions.assertIterableEquals(List.of(new ThirdEvent()), aggregate.flush());
@@ -154,6 +153,10 @@ public class AggregateTest {
         protected void applyThirdEvent(ThirdEvent event) {
             return;
         }
+
+        public AggregateId aggregateId() {
+            return new SampleAggregateId();
+        }
     }
 
     class AggregateSpy extends Aggregate {
@@ -176,5 +179,13 @@ public class AggregateTest {
         public boolean wasSecondEventApplied() {
             return this.wasSecondEventApplied;
         }
+
+        public AggregateId aggregateId() {
+            return new SampleAggregateId();
+        }
+    }
+
+    static class SampleAggregateId extends AggregateId {
+
     }
 }

@@ -3,6 +3,7 @@ package com.nealio.event_sourcing.aggregate;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class Aggregate {
@@ -15,7 +16,9 @@ public abstract class Aggregate {
         return this.aggregateVersion;
     }
 
-    public static Aggregate buildFromEvents(AggregateEvent[] events, Aggregate aggregate) {
+    abstract public AggregateId aggregateId();
+
+    public static Aggregate buildFromEvents(List<AggregateEvent> events, Aggregate aggregate) {
 
         if (aggregate.aggregateVersion > 0) {
             throw new CannotOverwriteAggregateWithExistingEventsException();
@@ -45,7 +48,6 @@ public abstract class Aggregate {
 
     private void apply(AggregateEvent event) {
         String eventClassName = event.getClass().getSimpleName();
-
         String methodName = "apply" + eventClassName;
         try {
             Method method = this.getClass().getDeclaredMethod(methodName, event.getClass());
