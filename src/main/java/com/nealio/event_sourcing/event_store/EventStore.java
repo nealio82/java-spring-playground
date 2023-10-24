@@ -8,5 +8,5 @@ import java.util.List;
 public interface EventStore {
     void persist(List<AggregateEvent> events);
 
-    List<AggregateEvent> events(AggregateId $aggregateId);
+    List<AggregateEvent> events(AggregateId aggregateId);
 }
